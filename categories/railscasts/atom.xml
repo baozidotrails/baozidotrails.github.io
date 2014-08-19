@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Railscasts | Baozi Wu]]></title>
+  <link href="http://blog.baozi-wu.com/categories/railscasts/atom.xml" rel="self"/>
+  <link href="http://blog.baozi-wu.com/"/>
+  <updated>2014-08-19T17:41:18+08:00</updated>
+  <id>http://blog.baozi-wu.com/</id>
+  <author>
+    <name><![CDATA[Baozi Wu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Nested Form With Rails 4.1]]></title>
+    <link href="http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/"/>
+    <updated>2014-08-18T16:50:01+08:00</updated>
+    <id>http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1</id>
+    <content type="html"><![CDATA[<p>Recently I got a <a href="http://us5.campaign-archive2.com/?u=0d868b8bb90703d75a27d8b42&amp;id=055f149177&amp;e=eea34cb3a8">guide</a> of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this guide to who also wants to be self-taught.</p>
+
+<blockquote><p>The average person forgets 40% of what they learn within 20 minutes.</p></blockquote>
+
+<p>So I decide to take notes here since now. It will spend most of my time to do, but if I do not do it today, I know I won&rsquo;t do it anymore. That is my lazy personality. The first technical post I am going to present my reviews of <a href="http://railscasts.com/episodes/196-nested-model-form-revised">#196 Nested Model Form (revised)</a>; meanwhile, some of the codes there are not working because of the version of Rails, so I will try to make it work like video shows with the latest Rails, please revise my code if you have better ways, thanks a bunch. OK so let us get started.</p>
+
+<h2>The Purpose</h2>
+
+<p>Like <a href="http://railscasts.com/episodes/196-nested-model-form-revised">#196 Nested Model Form (revised)</a> said, there are three separate models and already had associations with each other:</p>
+
+<pre><code class="ruby app/models/survey.rb">class Survey &lt; ActiveRecord::Base
+  has_many :questions
+end
+</code></pre>
+
+<pre><code class="ruby app/models/question.rb">class Question &lt; ActiveRecord::Base
+  belongs_to :survey
+  has_many :answers
+end
+</code></pre>
+
+<pre><code class="ruby app/models/answer.rb">class Answer &lt; ActiveRecord::Base
+  belongs_to :question
+end
+</code></pre>
+
+<p>Here is the schema:
+&#8220;` ruby db/schema.rb
+ActiveRecord::Schema.define(version: 20140817155213) do</p>
+
+<p>  create_table &ldquo;answers&rdquo;, force: true do |t|
+    t.text     &ldquo;content&rdquo;
+    t.integer  &ldquo;question_id&rdquo;
+    t.datetime &ldquo;created_at&rdquo;
+    t.datetime &ldquo;updated_at&rdquo;
+  end</p>
+
+<p>  create_table &ldquo;questions&rdquo;, force: true do |t|
+    t.text     &ldquo;content&rdquo;
+    t.integer  &ldquo;survey_id&rdquo;
+    t.datetime &ldquo;created_at&rdquo;
+    t.datetime &ldquo;updated_at&rdquo;
+  end</p>
+
+<p>  create_table &ldquo;surveys&rdquo;, force: true do |t|
+    t.string   &ldquo;name&rdquo;
+    t.datetime &ldquo;created_at&rdquo;
+    t.datetime &ldquo;updated_at&rdquo;
+  end</p>
+
+<p>end
+&#8220;`</p>
+
+<p>All we want is to manage them in a single form. In order to implement this, we have to call <code>accepts_nested_attributes_for</code> method in our model:</p>
+
+<pre><code class="ruby app/models/survey.rb">class Survey &lt; ActiveRecord::Base
+  has_many :questions
+  accepts_nested_attributes_for :questions
+end
+</code></pre>
+
+<p>So that we can add <code>fields_for</code> to <code>Question</code> model in here:</p>
+
+<p>&#8220;` ruby app/views/surveys/_form.html.erb
+.
+.
+.</p>
+
+<div class="field">
+  <%= f.label :name %><br>
+  <%= f.text_field :name %>
+</div>
+
+
+<p>&lt;%= f.fields_for :questions do |builder| %>
+  &lt;%= render &lsquo;question_fields&rsquo;, f: builder %>
+&lt;% end %></p>
+
+<div class="actions">
+  <%= f.submit %>
+</div>
+
+
+<p>&#8220;`</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>ruby linenos:false </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;%= f.fields_for :questions do |builder| %>
+</span><span class='line'>  &lt;%= render &lsquo;question_fields&rsquo;, f: builder %>
+</span><span class='line'>&lt;% end %></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

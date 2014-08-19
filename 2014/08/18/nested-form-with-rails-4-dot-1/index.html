@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Baozi Wu</title>
+  <title>Nested Form With Rails 4.1 - Baozi Wu</title>
   <meta name="author" content="Baozi Wu">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.baozi-wu.com">
+  <link rel="canonical" href="http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Baozi Wu" type="application/atom+xml">
@@ -64,15 +64,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/2014/08/18/nested-form-with-rails-4-dot-1/">Nested Form With Rails 4.1</a></h1>
+      <h1 class="entry-title">Nested Form With Rails 4.1</h1>
     
     
       <p class="meta">
@@ -83,15 +80,15 @@
 
 <time class='entry-date' datetime='2014-08-18T16:50:01+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:50 pm</span></time>
         
-           | <a href="/2014/08/18/nested-form-with-rails-4-dot-1/#disqus_thread"
-             data-disqus-identifier="http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/">Comments</a>
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://blog.baozi-wu.com">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Recently I got a <a href="http://us5.campaign-archive2.com/?u=0d868b8bb90703d75a27d8b42&amp;id=055f149177&amp;e=eea34cb3a8">guide</a> of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this guide to who also wants to be self-taught.</p>
+<div class="entry-content"><p>Recently I got a <a href="http://us5.campaign-archive2.com/?u=0d868b8bb90703d75a27d8b42&amp;id=055f149177&amp;e=eea34cb3a8">guide</a> of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this guide to who also wants to be self-taught.</p>
 
 <blockquote><p>The average person forgets 40% of what they learn within 20 minutes.</p></blockquote>
 
@@ -101,18 +98,18 @@
 
 <p>Like <a href="http://railscasts.com/episodes/196-nested-model-form-revised">#196 Nested Model Form (revised)</a> said, there are three separate models and already had associations with each other:</p>
 
-<figure class='code'><figcaption><span>app/models/survey.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/survey.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Survey</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
 </span><span class='line'>  <span class="n">has_many</span> <span class="ss">:questions</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
 
 
-<figure class='code'><figcaption><span>app/models/question.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/question.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -120,23 +117,23 @@
 </span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:survey</span>
 </span><span class='line'>  <span class="n">has_many</span> <span class="ss">:answers</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
 
 
-<figure class='code'><figcaption><span>app/models/answer.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/answer.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Answer</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
 </span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:question</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
 <p>Here is the schema:</p>
 
-<figure class='code'><figcaption><span>db/schema.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>db/schema.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -182,12 +179,12 @@
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
 <p>All we want is to manage them in a single form. In order to implement this, we have to call <code>accepts_nested_attributes_for</code> method in our model:</p>
 
-<figure class='code'><figcaption><span>app/models/survey.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/survey.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -195,12 +192,12 @@
 </span><span class='line'>  <span class="n">has_many</span> <span class="ss">:questions</span>
 </span><span class='line'>  <span class="n">accepts_nested_attributes_for</span> <span class="ss">:questions</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
 <p>So that we can add <code>fields_for</code> to <code>Question</code> model in here:</p>
 
-<figure class='code'><figcaption><span>app/views/surveys/_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -230,76 +227,76 @@
 </span><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="o">&gt;</span>
 </span><span class='line'>  <span class="o">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">submit</span> <span class="sx">%&gt;</span>
 </span><span class='line'><span class="sx">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
 
 
-<figure class='code'><figcaption><span>ruby linenos:false </span></figcaption>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>ruby linenos:false </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>&lt;%= f.fields_for :questions do |builder| %>
 </span><span class='line'>  &lt;%= render 'question_fields', f: builder %>
-</span><span class='line'>&lt;% end %></span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>&lt;% end %></span></code></pre></td></tr></table></div></figure></notextile></div>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Baozi Wu</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-08-18T16:50:01+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:50 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/rails/'>rails</a>, <a class='category' href='/categories/railscasts/'>railscasts</a>, <a class='category' href='/categories/tips/'>tips</a>
+  
+</span>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/2014/08/08/original-and-new-goal/">Original and New Goal</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-08T14:06:29+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:06 pm</span></time>
-        
-           | <a href="/2014/08/08/original-and-new-goal/#disqus_thread"
-             data-disqus-identifier="http://blog.baozi-wu.com/2014/08/08/original-and-new-goal/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Today is really special for me, because my <code>Macbook Air 13"</code> is already one year old. I remember that I felt unforgettable as soon as I touched her. I also remember that why did I think she is the one for me, do you want to know why?</p>
-
-<p>Because of <code>Ruby on Rails</code>. I would like to learn that since I visited <a href="http://blog.xdite.net/">this blog</a>. Those posts show me how wonderful Rails is, its porpose is to create websites, that&rsquo;s what I want!</p>
-
-<p>Few days later, I bought the the famous Rails developer, xdite, her book <a href="https://leanpub.com/rails-101">Rails 101 (It&rsquo;s free now)</a>. I impressed by a part of paragraph:</p>
-
-<blockquote><p>Mac 是最好的 Ruby on Rails 開發環境，馬上買一台！</p></blockquote>
-
-<p>So I got Macbook immediatrly. I am easy to be incfuenced by someone, but I do not regret to do this. I think this pricy stuff can make money for me soon. But such a pitty, I did not try my best to learn Rails in the last year.</p>
-
-<p>Now, I want to recreate my ambition. I am going to write down my thoughts of learning techniques here to train my writing skill. That&rsquo;s why I spend afternoon to build this blog using <a href="http://octopress.org/">Octopress</a>, you can follow <a href="http://octopress.org/docs/">Octopress documentation</a> to create it. If you have no idea why you must create a blog and insist on blogging, I believe <a href="http://zenhabits.net/write-daily/">Why You Should Write Daily</a> may help you much.</p>
-
-<p>Anyway, let&rsquo;s blog!</p>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/" data-via="baozidotrails" data-counturl="http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/2014/08/08/original-and-new-goal/" title="Previous Post: Original And New Goal">&laquo; Original And New Goal</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -330,6 +327,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -344,7 +342,10 @@
       var disqus_shortname = 'baozi';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/';
+        var disqus_url = 'http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

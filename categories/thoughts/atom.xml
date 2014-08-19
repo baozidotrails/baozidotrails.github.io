@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Thoughts | Baozi Wu]]></title>
+  <link href="http://blog.baozi-wu.com/categories/thoughts/atom.xml" rel="self"/>
+  <link href="http://blog.baozi-wu.com/"/>
+  <updated>2014-08-19T17:41:18+08:00</updated>
+  <id>http://blog.baozi-wu.com/</id>
+  <author>
+    <name><![CDATA[Baozi Wu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Original and New Goal]]></title>
+    <link href="http://blog.baozi-wu.com/2014/08/08/original-and-new-goal/"/>
+    <updated>2014-08-08T14:06:29+08:00</updated>
+    <id>http://blog.baozi-wu.com/2014/08/08/original-and-new-goal</id>
+    <content type="html"><![CDATA[<p>Today is really special for me, because my <code>Macbook Air 13"</code> is already one year old. I remember that I felt unforgettable as soon as I touched her. I also remember that why did I think she is the one for me, do you want to know why?</p>
+
+<p>Because of <code>Ruby on Rails</code>. I would like to learn that since I visited <a href="http://blog.xdite.net/">this blog</a>. Those posts show me how wonderful Rails is, its porpose is to create websites, that&rsquo;s what I want!</p>
+
+<p>Few days later, I bought the the famous Rails developer, xdite, her book <a href="https://leanpub.com/rails-101">Rails 101 (It&rsquo;s free now)</a>. I impressed by a part of paragraph:</p>
+
+<blockquote><p>Mac 是最好的 Ruby on Rails 開發環境，馬上買一台！</p></blockquote>
+
+<p>So I got Macbook immediatrly. I am easy to be incfuenced by someone, but I do not regret to do this. I think this pricy stuff can make money for me soon. But such a pitty, I did not try my best to learn Rails in the last year.</p>
+
+<p>Now, I want to recreate my ambition. I am going to write down my thoughts of learning techniques here to train my writing skill. That&rsquo;s why I spend afternoon to build this blog using <a href="http://octopress.org/">Octopress</a>, you can follow <a href="http://octopress.org/docs/">Octopress documentation</a> to create it. If you have no idea why you must create a blog and insist on blogging, I believe <a href="http://zenhabits.net/write-daily/">Why You Should Write Daily</a> may help you much.</p>
+
+<p>Anyway, let&rsquo;s blog!</p>
+]]></content>
+  </entry>
+  
+</feed>

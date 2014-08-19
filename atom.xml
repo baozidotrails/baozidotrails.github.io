@@ -1,97 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Baozi Wu</title>
-  <meta name="author" content="Baozi Wu">
-
-  
-  <meta name="description" content="Recently I got a guide of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://blog.baozi-wu.com">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Baozi Wu" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-
-  
-
-</head>
-
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Baozi Wu</a></h1>
-  
-    <h2>“I live by my ABC: Adventurous, Brave and Creative.”</h2>
-  
-</hgroup>
-
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:blog.baozi-wu.com" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[Baozi Wu]]></title>
+  <link href="http://blog.baozi-wu.com/atom.xml" rel="self"/>
+  <link href="http://blog.baozi-wu.com/"/>
+  <updated>2014-08-19T17:41:18+08:00</updated>
+  <id>http://blog.baozi-wu.com/</id>
+  <author>
+    <name><![CDATA[Baozi Wu]]></name>
     
-      <h1 class="entry-title"><a href="/2014/08/18/nested-form-with-rails-4-dot-1/">Nested Form With Rails 4.1</a></h1>
-    
-    
-      <p class="meta">
-        
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
-
-
-
-<time class='entry-date' datetime='2014-08-18T16:50:01+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:50 pm</span></time>
-        
-           | <a href="/2014/08/18/nested-form-with-rails-4-dot-1/#disqus_thread"
-             data-disqus-identifier="http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Recently I got a <a href="http://us5.campaign-archive2.com/?u=0d868b8bb90703d75a27d8b42&amp;id=055f149177&amp;e=eea34cb3a8">guide</a> of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this guide to who also wants to be self-taught.</p>
+  
+  <entry>
+    <title type="html"><![CDATA[Nested Form With Rails 4.1]]></title>
+    <link href="http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1/"/>
+    <updated>2014-08-18T16:50:01+08:00</updated>
+    <id>http://blog.baozi-wu.com/2014/08/18/nested-form-with-rails-4-dot-1</id>
+    <content type="html"><![CDATA[<p>Recently I got a <a href="http://us5.campaign-archive2.com/?u=0d868b8bb90703d75a27d8b42&amp;id=055f149177&amp;e=eea34cb3a8">guide</a> of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this guide to who also wants to be self-taught.</p>
 
 <blockquote><p>The average person forgets 40% of what they learn within 20 minutes.</p></blockquote>
 
@@ -243,38 +170,15 @@
 </span><span class='line'>  &lt;%= render 'question_fields', f: builder %>
 </span><span class='line'>&lt;% end %></span></code></pre></td></tr></table></div></figure>
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/2014/08/08/original-and-new-goal/">Original and New Goal</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-08T14:06:29+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:06 pm</span></time>
-        
-           | <a href="/2014/08/08/original-and-new-goal/#disqus_thread"
-             data-disqus-identifier="http://blog.baozi-wu.com/2014/08/08/original-and-new-goal/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Today is really special for me, because my <code>Macbook Air 13"</code> is already one year old. I remember that I felt unforgettable as soon as I touched her. I also remember that why did I think she is the one for me, do you want to know why?</p>
+  <entry>
+    <title type="html"><![CDATA[Original and New Goal]]></title>
+    <link href="http://blog.baozi-wu.com/2014/08/08/original-and-new-goal/"/>
+    <updated>2014-08-08T14:06:29+08:00</updated>
+    <id>http://blog.baozi-wu.com/2014/08/08/original-and-new-goal</id>
+    <content type="html"><![CDATA[<p>Today is really special for me, because my <code>Macbook Air 13"</code> is already one year old. I remember that I felt unforgettable as soon as I touched her. I also remember that why did I think she is the one for me, do you want to know why?</p>
 
 <p>Because of <code>Ruby on Rails</code>. I would like to learn that since I visited <a href="http://blog.xdite.net/">this blog</a>. Those posts show me how wonderful Rails is, its porpose is to create websites, that&rsquo;s what I want!</p>
 
@@ -287,108 +191,7 @@
 <p>Now, I want to recreate my ambition. I am going to write down my thoughts of learning techniques here to train my writing skill. That&rsquo;s why I spend afternoon to build this blog using <a href="http://octopress.org/">Octopress</a>, you can follow <a href="http://octopress.org/docs/">Octopress documentation</a> to create it. If you have no idea why you must create a blog and insist on blogging, I believe <a href="http://zenhabits.net/write-daily/">Why You Should Write Daily</a> may help you much.</p>
 
 <p>Anyway, let&rsquo;s blog!</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/2014/08/18/nested-form-with-rails-4-dot-1/">Nested Form With Rails 4.1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/2014/08/08/original-and-new-goal/">Original and New Goal</a>
-      </li>
-    
-  </ul>
-</section>
-<section>
-  <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/categories/rails'>rails (1)</a></li><li><a href='/categories/railscasts'>railscasts (1)</a></li><li><a href='/categories/thoughts'>thoughts (1)</a></li><li><a href='/categories/tips'>tips (1)</a></li></ul>
-</section>
-
-<section>
-  <h1>Latest Tweets</h1>
-  <p><a class="twitter-timeline" href="https://twitter.com/baozidotrails" data-widget-id="501376329413951490">Tweets by @baozidotrails</a></p>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</section>
-
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Baozi Wu -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
-
-<script type="text/javascript">
-      var disqus_shortname = 'baozi';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
-
-
-
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
-</body>
-</html>
+</feed>
