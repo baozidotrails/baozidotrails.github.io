@@ -1,0 +1,44 @@
+/* overrides of the lousy styles from _syntax.scss */
+
+
+nav[role="navigation"] {
+  border-top: 1px dashed #e3e3e3;
+  .main-navigation {
+    li {
+      a {
+        color: white;
+        text-shadow: none;
+        &:hover {
+          color: #eacdb2;
+        }
+      }
+    }
+  }
+}
+
+header[role="banner"] {
+  background: url(/images/you.jpg) no-repeat fixed;
+  background-position: 0px -400px;
+  background-size: cover;
+  hgroup {
+    h1 {
+
+    }
+    h2 {
+      color: #eacdb2;
+    }
+  }
+}
+
+.fb_iframe_widget {
+  top: -7.5px;
+}
+
+.code {
+  figcaption {
+    border-top-right-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    background-image: linear-gradient(#f7f7f7,#f7f7f7 6%,#f7f7f7 90%,#f7f7f7) !important;
+    box-shadow: none !important;
+  }
+}
