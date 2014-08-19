@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tips | Baozi Wu]]></title>
   <link href="http://blog.baozi-wu.com/categories/tips/atom.xml" rel="self"/>
   <link href="http://blog.baozi-wu.com/"/>
-  <updated>2014-08-19T18:14:08+08:00</updated>
+  <updated>2014-08-19T21:57:16+08:00</updated>
   <id>http://blog.baozi-wu.com/</id>
   <author>
     <name><![CDATA[Baozi Wu]]></name>
@@ -24,8 +24,6 @@
 
 <p>So I decide to take notes here since now. It will spend most of my time to do, but if I do not do it today, I know I won&rsquo;t do it anymore. That is my lazy personality. The first technical post I am going to present my reviews of <a href="http://railscasts.com/episodes/196-nested-model-form-revised">#196 Nested Model Form (revised)</a>; meanwhile, some of the codes there are not working because of the version of Rails, so I will try to make it work like video shows with the latest Rails, please revise my code if you have better ways, thanks a bunch. OK so let us get started.</p>
 
-<h2>The Purpose</h2>
-
 <p>Like <a href="http://railscasts.com/episodes/196-nested-model-form-revised">#196 Nested Model Form (revised)</a> said, there are three separate models and already had associations with each other:</p>
 
 <pre><code class="ruby app/models/survey.rb">class Survey &lt; ActiveRecord::Base
@@ -44,47 +42,49 @@ end
 end
 </code></pre>
 
-<p>Here is the schema:
-&#8220;` ruby db/schema.rb
-ActiveRecord::Schema.define(version: 20140817155213) do</p>
+<p>Here is the schema:</p>
 
-<p>  create_table &ldquo;answers&rdquo;, force: true do |t|
-    t.text     &ldquo;content&rdquo;
-    t.integer  &ldquo;question_id&rdquo;
-    t.datetime &ldquo;created_at&rdquo;
-    t.datetime &ldquo;updated_at&rdquo;
-  end</p>
+<pre><code class="ruby db/schema.rb">ActiveRecord::Schema.define(version: 20140817155213) do
 
-<p>  create_table &ldquo;questions&rdquo;, force: true do |t|
-    t.text     &ldquo;content&rdquo;
-    t.integer  &ldquo;survey_id&rdquo;
-    t.datetime &ldquo;created_at&rdquo;
-    t.datetime &ldquo;updated_at&rdquo;
-  end</p>
+  create_table "answers", force: true do |t|
+    t.text     "content"
+    t.integer  "question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
-<p>  create_table &ldquo;surveys&rdquo;, force: true do |t|
-    t.string   &ldquo;name&rdquo;
-    t.datetime &ldquo;created_at&rdquo;
-    t.datetime &ldquo;updated_at&rdquo;
-  end</p>
+  create_table "questions", force: true do |t|
+    t.text     "content"
+    t.integer  "survey_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
-<p>end
-&#8220;`</p>
+  create_table "surveys", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+end
+</code></pre>
+
+<h2>The Purpose</h2>
 
 <p>All we want is to manage them in a single form. In order to implement this, we have to call <code>accepts_nested_attributes_for</code> method in our model:</p>
 
 <pre><code class="ruby app/models/survey.rb">class Survey &lt; ActiveRecord::Base
-  has_many :questions
+  ...
   accepts_nested_attributes_for :questions
 end
 </code></pre>
 
-<p>So that we can add <code>fields_for</code> to <code>Question</code> model in here:</p>
+<p>So that we can add <code>fields_for</code> to <code>Question</code> model in the form:</p>
 
-<p>&#8220;` ruby app/views/surveys/_form.html.erb
-.
-.
-.</p>
+<p>&#8220;` html app/views/surveys/_form.html.erb
+&hellip;
+&hellip;
+&hellip;</p>
 
 <div class="field">
   <%= f.label :name %><br>
@@ -93,23 +93,182 @@ end
 
 
 <p>&lt;%= f.fields_for :questions do |builder| %>
-  &lt;%= render &lsquo;question_fields&rsquo;, f: builder %>
-&lt;% end %></p>
+  <fieldset>
+  &lt;%= builder.label :content, &lsquo;Question&rsquo; %><br>
+  &lt;%= builder.text_area :content %><br>
+  </fieldset>
+&lt;% end %>
+&hellip;
+&hellip;
+&hellip;</p>
 
-<div class="actions">
-  <%= f.submit %>
+<pre><code>
+Remember to add plural name of associated model (Followed by `_attributes`) to `Strong Parameter` from `SurveysController`:
+</code></pre>
+
+<p>&hellip;
+&hellip;
+&hellip;
+private
+  &hellip;
+  &hellip;
+  &hellip;</p>
+
+<p>  # Never trust parameters from the scary internet, only allow the white list through.
+  def survey_params
+    params.require(:survey).permit(:name, questions_attributes: [:id, :content])
+  end
+&#8220;`</p>
+
+<h2>Removing Questions</h2>
+
+<p>Next we are going to implement removing questions feature. We will create a checkbox which its key is <code>_destroy</code>, so the question will be removed if checkbox is checked.</p>
+
+<p>&#8220;` html app/views/surveys/_form.html.erb
+&hellip;
+&hellip;
+&hellip;</p>
+
+<div class="field">
+  <%= f.label :name %><br>
+  <%= f.text_field :name %>
 </div>
 
 
-<p>&#8220;`</p>
+<p>&lt;%= f.fields_for :questions do |question| %>
+  <fieldset>
+  &lt;%= question.label :content, &lsquo;Question&rsquo; %><br>
+  &lt;%= question.text_area :content %><br>
+  &lt;%= question.check_box :<em>destroy %>
+  &lt;%= question.label :</em>destroy, &lsquo;Remove question&rsquo; %>
+  </fieldset>
+&lt;% end %>
+<code>``
+Add</code>allow_destroy<code>option to</code>Survey` model, set the value to be true:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>ruby linenos:false </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;%= f.fields_for :questions do |builder| %>
-</span><span class='line'>  &lt;%= render &lsquo;question_fields&rsquo;, f: builder %>
-</span><span class='line'>&lt;% end %></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<pre><code class="ruby app/models/survey.rb">class Survey &lt; ActiveRecord::Base
+  ...
+  accepts_nested_attributes_for :questions, allow_destroy: true
+end
+</code></pre>
+
+<p>We also need to add <code>_destroy</code> to <code>questions_attributes</code> (Strong Parameter)</p>
+
+<pre><code class="ruby app/controllers/surveys_controller.rb">...
+...
+...
+private
+  ...
+  ...
+  ...
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def survey_params
+    params.require(:survey).permit(:name, questions_attributes: [:id, :content, :_destroy])
+  end
+</code></pre>
+
+<p>Finally we can delete the questions through checking the checkboxes.</p>
+
+<h2>Editing Answers</h2>
+
+<p>Now, we also want to edit each question&rsquo;s answers.</p>
+
+<p>Just like before, we can call <code>accepts_nested_attributes_for</code> method to its associated model -  <code>Question</code>:</p>
+
+<pre><code class="ruby app/models/question.rb">class Question &lt; ActiveRecord::Base
+  ...
+  accepts_nested_attributes_for :answers, allow_destroy: true
+end
+</code></pre>
+
+<p>Remember again, insert the plural name of associated model, <code>Question</code> model in the strong parameter. Let&rsquo;s see how to do it:</p>
+
+<pre><code class="ruby app/controllers/surveys_controller.rb">...
+...
+...
+private
+  ...
+  ...
+  ...
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def survey_params
+    params ... questions_attributes: [:id, :content, :_destroy, answers_attributes: [:id, :content, :_destroy]])
+  end
+</code></pre>
+
+<p>Next, add fields for <code>Answer</code>:</p>
+
+<pre><code class="html app/views/surveys/_form.html.erb">...
+...
+&lt;%= f.fields_for :questions do |question| %&gt;
+  &lt;fieldset&gt;
+  &lt;%= question.label :content, 'Question' %&gt;&lt;br&gt;
+  &lt;%= question.text_area :content %&gt;&lt;br&gt;
+  &lt;%= question.check_box :_destroy %&gt;
+  &lt;%= question.label :_destroy, 'Remove question' %&gt;
+  &lt;%= question.fields_for :answers do |answer| %&gt;
+    &lt;%= answer.label :content, 'Answer' %&gt;&lt;br&gt;
+    &lt;%= answer.text_field :content %&gt;&lt;br&gt;
+  &lt;% end %&gt;
+  &lt;/fieldset&gt;
+&lt;% end %&gt;
+...
+...
+</code></pre>
+
+<p>Then <code>Answer</code> model can be managed by the form.</p>
+
+<p>But it it better that we can make our form more neat, we will use <code>render</code> method to do it.</p>
+
+<pre><code class="html app/views/surveys/_form.html.erb">...
+...
+&lt;%= f.fields_for :questions do |question| %&gt;
+  &lt;%= render 'question_fields', f: question %&gt;
+&lt;% end %&gt;
+...
+...
+</code></pre>
+
+<p>And create <code>_question_fields.html.erb</code> file into <code>app/views/surveys</code> folder:</p>
+
+<pre><code class="html app/views/surveys/_question_fields.html.erb">&lt;fieldset&gt;
+  &lt;%= f.label :content, 'Question' %&gt;&lt;br&gt;
+  &lt;%= f.text_area :content %&gt;&lt;br&gt;
+  &lt;%= f.check_box :_destroy %&gt;
+  &lt;%= f.label :_destroy, 'Remove question' %&gt;
+  &lt;%= f.fields_for :answers do |answer| %&gt;
+    &lt;%= answer.label :content, 'Answer' %&gt;&lt;br&gt;
+    &lt;%= answer.text_field :content %&gt;&lt;br&gt;
+  &lt;% end %&gt;
+&lt;/fieldset&gt;
+</code></pre>
+
+<p><code>render</code> each question&rsquo;s answers:</p>
+
+<pre><code class="html app/views/surveys/_question_fields.html.erb">&lt;fieldset&gt;
+  &lt;%= f.label :content, 'Question' %&gt;&lt;br&gt;
+  &lt;%= f.text_area :content %&gt;&lt;br&gt;
+  &lt;%= f.check_box :_destroy %&gt;
+  &lt;%= f.label :_destroy, 'Remove question' %&gt;
+  &lt;%= f.fields_for :answers do |answer| %&gt;
+    &lt;%= render 'answer_fields', f: answer %&gt;
+  &lt;% end %&gt;
+&lt;/fieldset&gt;
+</code></pre>
+
+<p>create <code>_answer_fields.html.erb</code> into <code>app/views/surveys</code> folder:</p>
+
+<pre><code class="html app/views/surveys/_answer_fields.html.erb">&lt;fieldset&gt;
+  &lt;%= f.label :content, 'Answer' %&gt;
+  &lt;%= f.text_field :content %&gt;
+  &lt;%= f.check_box :_destroy %&gt;
+  &lt;%= label :_destroy, 'Remove' %&gt;
+&lt;/fieldset&gt;
+</code></pre>
+
+<h2>TODO: Editing Questions and Answers through JavaScript</h2>
 ]]></content>
   </entry>
   
