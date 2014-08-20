@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tips | Baozi Wu]]></title>
   <link href="http://blog.baozi-wu.com/categories/tips/atom.xml" rel="self"/>
   <link href="http://blog.baozi-wu.com/"/>
-  <updated>2014-08-20T22:11:11+08:00</updated>
+  <updated>2014-08-21T01:32:20+08:00</updated>
   <id>http://blog.baozi-wu.com/</id>
   <author>
     <name><![CDATA[Baozi Wu]]></name>
@@ -152,7 +152,7 @@ Add</code>allow_destroy<code>option to</code>Survey` model, set the value to be 
 end
 </code></pre>
 
-<p>We also need to add <code>_destroy</code> to <code>questions_attributes</code> (Strong Parameter)</p>
+<p>We also need to add <code>_destroy</code> to <code>questions_attributes</code> like before:</p>
 
 <pre><code class="ruby app/controllers/surveys_controller.rb">...
 ...
@@ -268,7 +268,107 @@ private
 &lt;/fieldset&gt;
 </code></pre>
 
-<h2>TODO: Editing Questions and Answers through JavaScript</h2>
+<h2>Editing Questions and Answers through JavaScript</h2>
+
+<p>This step we want to use links to remove questions and answers insted of checkboxes. Here are some steps for this action beforing coding:</p>
+
+<ol>
+<li>Click <code>Remove</code> link.</li>
+<li>Hide the <code>Question</code> or <code>Answer</code> fields.</li>
+<li>Datas will be updated after submitting.</li>
+</ol>
+
+
+<p>Let&rsquo;s get started! Remove <code>_destroy</code> checkbox, set <code>label</code> to be <code>hidden_field</code> and add a link which has <code>remove_fields</code> class.</p>
+
+<pre><code class="html app/views/surveys/_question_fields.html.erb">&lt;fieldset&gt;
+  &lt;%= f.label :content, 'Question' %&gt;&lt;br&gt;
+  &lt;%= f.text_area :content %&gt;&lt;br&gt;
+  &lt;%= f.hidden_field :_destroy %&gt;
+  &lt;%= link_to 'Remove', '#', class: 'remove_fields' %&gt;
+  &lt;%= f.fields_for :answers do |builder| %&gt;
+    &lt;%= render 'answer_fields', f: builder %&gt;
+  &lt;% end %&gt;
+&lt;/fieldset&gt;
+</code></pre>
+
+<p>So the <code>&lt;%= f.hidden_field :_destroy %&gt;</code> will generate <code>&lt;input id="..." name="..." type="hidden" value="false"&gt;</code> for us.</p>
+
+<p>And having coffee, when we click links with <code>.remove_fields</code> class, it is triggered these event:</p>
+
+<pre><code class="coffee app/assets/javascripts/custom.js.coffee">$(document).on 'click', '.remove_fields', (event) -&gt;
+  $(this).prev('input[type="hidden"]').val(true)
+  $(this).closest('fieldset').hide()
+  event.preventDefault()
+</code></pre>
+
+<p>They means:</p>
+
+<ol>
+<li>Select previous elements of <code>.remove_fields</code>. The filter is <code>type="hidden"</code>, and set its value to be <code>true</code>.</li>
+<li>Then hide the fieldset element which is closest to <code>.remove_fields</code>.</li>
+</ol>
+
+
+<p>Do the same thing to <code>Answer</code> fields:</p>
+
+<pre><code class="html app/views/surveys/_answer_fields.html.erb">&lt;fieldset&gt;
+  &lt;%= f.label :content, 'Answer' %&gt;
+  &lt;%= f.text_field :content %&gt;
+  &lt;%= f.hidden_field :_destroy %&gt;
+  &lt;%= link_to 'Remove', '#', class: 'remove_fields' %&gt;
+&lt;/fieldset&gt;
+</code></pre>
+
+<p>Then we can remove fields by links.</p>
+
+<p>Next, add helper <code>link_to_add_fields</code>, we will make it.</p>
+
+<pre><code class="html app/views/surveys/_question_fields.html.erb">&lt;fieldset&gt;
+  &lt;%= f.label :content, 'Question' %&gt;&lt;br&gt;
+  &lt;%= f.text_area :content %&gt;&lt;br&gt;
+  &lt;%= f.hidden_field :_destroy %&gt;
+  &lt;%= link_to 'Remove', '#', class: 'remove_fields' %&gt;
+  &lt;%= f.fields_for :answers do |builder| %&gt;
+    &lt;%= render 'answer_fields', f: builder %&gt;
+  &lt;% end %&gt;
+  &lt;%= link_to_add_fields 'Add Answer', f, :answers %&gt;
+&lt;/fieldset&gt;
+</code></pre>
+
+<p>Here are it look like:</p>
+
+<pre><code class="ruby app/helpers/application_helper.rb">module ApplicationHelper
+  def link_to_add_fields(name, form, association)
+    new_object = form.object.send(association).klass.new
+    id = new_object.object_id
+    fields = form.fields_for(association, new_object, child_index: id) do |builder|
+      # render partial
+      render(association.to_s.singularize + "_fields", f: builder)
+    end
+    link_to(name, '#', class: 'add_fields', data: { id: id, fields: fields.gsub("\n", "") })
+  end
+end
+</code></pre>
+
+<p>We get <code>Question</code> instance from <code>form.object</code>, sending association to it and call <code>klass</code>, we get <code>Answer</code> class, then call <code>new</code> method. Next, we fetch its object id in order to make its field.</p>
+
+<p>After create fields we make a link which has <code>data-id</code> and <code>data-fields</code> attributes. So that we can retrieve fields before <code>.add_fields</code>.</p>
+
+<pre><code class="coffee app/assets/javascripts/custom.js.coffee">$(document).on 'click', '.add_fields', (event) -&gt;
+  time = new Date().getTime()
+  regexp = new RegExp($(this).data('id'), 'g')
+  $(this).before($(this).data('fields').replace(regexp, time))
+  event.preventDefault()
+</code></pre>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/196-nested-model-form-revised?view=comments">Screencast&rsquo;s comments</a></li>
+<li><a href="http://railscasts.com/episodes/390-turbolinks?view=asciicast">#390 Turbolinks</a></li>
+</ul>
+
 ]]></content>
   </entry>
   

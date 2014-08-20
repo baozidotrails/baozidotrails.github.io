@@ -316,7 +316,7 @@
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p>We also need to add <code>_destroy</code> to <code>questions_attributes</code> (Strong Parameter)</p>
+<p>We also need to add <code>_destroy</code> to <code>questions_attributes</code> like before:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/controllers/surveys_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -516,7 +516,158 @@
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<h2>TODO: Editing Questions and Answers through JavaScript</h2>
+<h2>Editing Questions and Answers through JavaScript</h2>
+
+<p>This step we want to use links to remove questions and answers insted of checkboxes. Here are some steps for this action beforing coding:</p>
+
+<ol>
+<li>Click <code>Remove</code> link.</li>
+<li>Hide the <code>Question</code> or <code>Answer</code> fields.</li>
+<li>Datas will be updated after submitting.</li>
+</ol>
+
+
+<p>Let&rsquo;s get started! Remove <code>_destroy</code> checkbox, set <code>label</code> to be <code>hidden_field</code> and add a link which has <code>remove_fields</code> class.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_question_fields.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;fieldset&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= f.label :content, &#39;Question&#39; %&gt;<span class="nt">&lt;br&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= f.text_area :content %&gt;<span class="nt">&lt;br&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= f.hidden_field :_destroy %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= link_to &#39;Remove&#39;, &#39;#&#39;, class: &#39;remove_fields&#39; %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= f.fields_for :answers do |builder| %&gt;
+</span><span class='line'>    <span class="err">&lt;</span>%= render &#39;answer_fields&#39;, f: builder %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>% end %&gt;
+</span><span class='line'><span class="nt">&lt;/fieldset&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>So the <code>&lt;%= f.hidden_field :_destroy %&gt;</code> will generate <code>&lt;input id="..." name="..." type="hidden" value="false"&gt;</code> for us.</p>
+
+<p>And having coffee, when we click links with <code>.remove_fields</code> class, it is triggered these event:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/assets/javascripts/custom.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffee'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span> <span class="s">&#39;click&#39;</span><span class="p">,</span> <span class="s">&#39;.remove_fields&#39;</span><span class="p">,</span> <span class="nf">(event) -&gt;</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">prev</span><span class="p">(</span><span class="s">&#39;input[type=&quot;hidden&quot;]&#39;</span><span class="p">).</span><span class="nx">val</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="s">&#39;fieldset&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>They means:</p>
+
+<ol>
+<li>Select previous elements of <code>.remove_fields</code>. The filter is <code>type="hidden"</code>, and set its value to be <code>true</code>.</li>
+<li>Then hide the fieldset element which is closest to <code>.remove_fields</code>.</li>
+</ol>
+
+
+<p>Do the same thing to <code>Answer</code> fields:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_answer_fields.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;fieldset&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= f.label :content, &#39;Answer&#39; %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= f.text_field :content %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= f.hidden_field :_destroy %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= link_to &#39;Remove&#39;, &#39;#&#39;, class: &#39;remove_fields&#39; %&gt;
+</span><span class='line'><span class="nt">&lt;/fieldset&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Then we can remove fields by links.</p>
+
+<p>Next, add helper <code>link_to_add_fields</code>, we will make it.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_question_fields.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;fieldset&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= f.label :content, &#39;Question&#39; %&gt;<span class="nt">&lt;br&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= f.text_area :content %&gt;<span class="nt">&lt;br&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= f.hidden_field :_destroy %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= link_to &#39;Remove&#39;, &#39;#&#39;, class: &#39;remove_fields&#39; %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= f.fields_for :answers do |builder| %&gt;
+</span><span class='line'>    <span class="err">&lt;</span>%= render &#39;answer_fields&#39;, f: builder %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>% end %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= link_to_add_fields &#39;Add Answer&#39;, f, :answers %&gt;
+</span><span class='line'><span class="nt">&lt;/fieldset&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Here are it look like:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/helpers/application_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ApplicationHelper</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">link_to_add_fields</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">association</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">new_object</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">association</span><span class="p">)</span><span class="o">.</span><span class="n">klass</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="nb">id</span> <span class="o">=</span> <span class="n">new_object</span><span class="o">.</span><span class="n">object_id</span>
+</span><span class='line'>    <span class="n">fields</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">fields_for</span><span class="p">(</span><span class="n">association</span><span class="p">,</span> <span class="n">new_object</span><span class="p">,</span> <span class="ss">child_index</span><span class="p">:</span> <span class="nb">id</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">builder</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># render partial</span>
+</span><span class='line'>      <span class="n">render</span><span class="p">(</span><span class="n">association</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">singularize</span> <span class="o">+</span> <span class="s2">&quot;_fields&quot;</span><span class="p">,</span> <span class="ss">f</span><span class="p">:</span> <span class="n">builder</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">link_to</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span> <span class="s1">&#39;add_fields&#39;</span><span class="p">,</span> <span class="ss">data</span><span class="p">:</span> <span class="p">{</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="ss">fields</span><span class="p">:</span> <span class="n">fields</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">})</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>We get <code>Question</code> instance from <code>form.object</code>, sending association to it and call <code>klass</code>, we get <code>Answer</code> class, then call <code>new</code> method. Next, we fetch its object id in order to make its field.</p>
+
+<p>After create fields we make a link which has <code>data-id</code> and <code>data-fields</code> attributes. So that we can retrieve fields before <code>.add_fields</code>.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/assets/javascripts/custom.js.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffee'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">on</span> <span class="s">&#39;click&#39;</span><span class="p">,</span> <span class="s">&#39;.add_fields&#39;</span><span class="p">,</span> <span class="nf">(event) -&gt;</span>
+</span><span class='line'>  <span class="nv">time = </span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span>
+</span><span class='line'>  <span class="nv">regexp = </span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">),</span> <span class="s">&#39;g&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">before</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="nx">regexp</span><span class="p">,</span> <span class="nx">time</span><span class="p">))</span>
+</span><span class='line'>  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://railscasts.com/episodes/196-nested-model-form-revised?view=comments">Screencast&rsquo;s comments</a></li>
+<li><a href="http://railscasts.com/episodes/390-turbolinks?view=asciicast">#390 Turbolinks</a></li>
+</ul>
+
 </div>
 
 
