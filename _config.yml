@@ -101,3 +101,5 @@ google_analytics_tracking_id:
 
 # Facebook Like
 facebook_like: true
+
+tapir_token: 53f46bc098f5ab0200000000
