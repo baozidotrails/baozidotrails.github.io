@@ -94,6 +94,8 @@
 
 <p>So I decide to take notes here since now. It will spend most of my time to do, but if I do not do it today, I know I won&rsquo;t do it anymore. That is my lazy personality. The first technical post I am going to present my reviews of <a href="http://railscasts.com/episodes/196-nested-model-form-revised">#196 Nested Model Form (revised)</a>; meanwhile, some of the codes there are not working because of the version of Rails, so I will try to make it work like video shows with the latest Rails, please revise my code if you have better ways, thanks a bunch. OK so let us get started.</p>
 
+<h2>The Purpose</h2>
+
 <p>Like <a href="http://railscasts.com/episodes/196-nested-model-form-revised">#196 Nested Model Form (revised)</a> said, there are three separate models and already had associations with each other:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/survey.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -180,8 +182,6 @@
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<h2>The Purpose</h2>
-
 <p>All we want is to manage them in a single form. In order to implement this, we have to call <code>accepts_nested_attributes_for</code> method in our model:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/survey.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -189,13 +189,13 @@
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Survey</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:questions</span>
 </span><span class='line'>  <span class="n">accepts_nested_attributes_for</span> <span class="ss">:questions</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p>So that we can add <code>fields_for</code> to <code>Question</code> model in the form:</p>
+<p>So that we can add <code>fields_for</code> to <code>Question</code> model in here:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -212,310 +212,34 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>...
-</span><span class='line'>...
-</span><span class='line'>...
-</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;field&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.label :name %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.text_field :name %&gt;
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span>
+</span><span class='line'><span class="o">.</span>
+</span><span class='line'><span class="o">.</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= f.label :name %&gt;&lt;br&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:name</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="err">&lt;</span>%= f.fields_for :questions do |builder| %&gt;
-</span><span class='line'>  <span class="nt">&lt;fieldset&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= builder.label :content, &#39;Question&#39; %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= builder.text_area :content %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/fieldset&gt;</span>
-</span><span class='line'><span class="err">&lt;</span>% end %&gt;
-</span><span class='line'>...
-</span><span class='line'>...
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>Remember to add plural name of associated model (Followed by <code>_attributes</code>) to <code>Strong Parameter</code> from <code>SurveysController</code>:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/controllers/surveys_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="kp">private</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= f.fields_for :questions do |builder| %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">render</span> <span class="s1">&#39;question_fields&#39;</span><span class="p">,</span> <span class="ss">f</span><span class="p">:</span> <span class="n">builder</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;% end %&gt;</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="c1"># Never trust parameters from the scary internet, only allow the white list through.</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">survey_params</span>
-</span><span class='line'>    <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:survey</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">questions_attributes</span><span class="p">:</span> <span class="o">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:content</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">submit</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<h2>Removing Questions</h2>
 
-<p>Next we are going to implement removing questions feature. We will create a checkbox which its key is <code>_destroy</code>, so the question will be removed if checkbox is checked.</p>
 
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>ruby linenos:false </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>...
-</span><span class='line'>...
-</span><span class='line'>...
-</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;field&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.label :name %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.text_field :name %&gt;
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">&lt;</span>%= f.fields_for :questions do |question| %&gt;
-</span><span class='line'>  <span class="nt">&lt;fieldset&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= question.label :content, &#39;Question&#39; %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= question.text_area :content %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= question.check_box :_destroy %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= question.label :_destroy, &#39;Remove question&#39; %&gt;
-</span><span class='line'>  <span class="nt">&lt;/fieldset&gt;</span>
-</span><span class='line'><span class="err">&lt;</span>% end %&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;%= f.fields_for :questions do |builder| %>
+</span><span class='line'>  &lt;%= render 'question_fields', f: builder %>
+</span><span class='line'>&lt;% end %></span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<p>Add <code>allow_destroy</code> option to <code>Survey</code> model, set the value to be true:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/survey.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Survey</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="n">accepts_nested_attributes_for</span> <span class="ss">:questions</span><span class="p">,</span> <span class="ss">allow_destroy</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>We also need to add <code>_destroy</code> to <code>questions_attributes</code> (Strong Parameter)</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/controllers/surveys_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="kp">private</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Never trust parameters from the scary internet, only allow the white list through.</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">survey_params</span>
-</span><span class='line'>    <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:survey</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">questions_attributes</span><span class="p">:</span> <span class="o">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:_destroy</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>Finally we can delete the questions through checking the checkboxes.</p>
-
-<h2>Editing Answers</h2>
-
-<p>Now, we also want to edit each question&rsquo;s answers.</p>
-
-<p>Just like before, we can call <code>accepts_nested_attributes_for</code> method to its associated model -  <code>Question</code>:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/question.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Question</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="n">accepts_nested_attributes_for</span> <span class="ss">:answers</span><span class="p">,</span> <span class="ss">allow_destroy</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>Remember again, insert the plural name of associated model, <code>Question</code> model in the strong parameter. Let&rsquo;s see how to do it:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/controllers/surveys_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="kp">private</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># Never trust parameters from the scary internet, only allow the white list through.</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">survey_params</span>
-</span><span class='line'>    <span class="n">params</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="ss">questions_attributes</span><span class="p">:</span> <span class="o">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:_destroy</span><span class="p">,</span> <span class="ss">answers_attributes</span><span class="p">:</span> <span class="o">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:_destroy</span><span class="o">]]</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>Next, add fields for <code>Answer</code>:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>...
-</span><span class='line'>...
-</span><span class='line'><span class="err">&lt;</span>%= f.fields_for :questions do |question| %&gt;
-</span><span class='line'>  <span class="nt">&lt;fieldset&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= question.label :content, &#39;Question&#39; %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= question.text_area :content %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= question.check_box :_destroy %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= question.label :_destroy, &#39;Remove question&#39; %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= question.fields_for :answers do |answer| %&gt;
-</span><span class='line'>    <span class="err">&lt;</span>%= answer.label :content, &#39;Answer&#39; %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>    <span class="err">&lt;</span>%= answer.text_field :content %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>% end %&gt;
-</span><span class='line'>  <span class="nt">&lt;/fieldset&gt;</span>
-</span><span class='line'><span class="err">&lt;</span>% end %&gt;
-</span><span class='line'>...
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>Then <code>Answer</code> model can be managed by the form.</p>
-
-<p>But it it better that we can make our form more neat, we will use <code>render</code> method to do it.</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>...
-</span><span class='line'>...
-</span><span class='line'><span class="err">&lt;</span>%= f.fields_for :questions do |question| %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= render &#39;question_fields&#39;, f: question %&gt;
-</span><span class='line'><span class="err">&lt;</span>% end %&gt;
-</span><span class='line'>...
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>And create <code>_question_fields.html.erb</code> file into <code>app/views/surveys</code> folder:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_question_fields.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;fieldset&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.label :content, &#39;Question&#39; %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.text_area :content %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.check_box :_destroy %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= f.label :_destroy, &#39;Remove question&#39; %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= f.fields_for :answers do |answer| %&gt;
-</span><span class='line'>    <span class="err">&lt;</span>%= answer.label :content, &#39;Answer&#39; %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>    <span class="err">&lt;</span>%= answer.text_field :content %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>% end %&gt;
-</span><span class='line'><span class="nt">&lt;/fieldset&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p><code>render</code> each question&rsquo;s answers:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_question_fields.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;fieldset&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.label :content, &#39;Question&#39; %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.text_area :content %&gt;<span class="nt">&lt;br&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.check_box :_destroy %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= f.label :_destroy, &#39;Remove question&#39; %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= f.fields_for :answers do |answer| %&gt;
-</span><span class='line'>    <span class="err">&lt;</span>%= render &#39;answer_fields&#39;, f: answer %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>% end %&gt;
-</span><span class='line'><span class="nt">&lt;/fieldset&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<p>create <code>_answer_fields.html.erb</code> into <code>app/views/surveys</code> folder:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/views/surveys/_answer_fields.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;fieldset&gt;</span>
-</span><span class='line'>  <span class="err">&lt;</span>%= f.label :content, &#39;Answer&#39; %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= f.text_field :content %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= f.check_box :_destroy %&gt;
-</span><span class='line'>  <span class="err">&lt;</span>%= label :_destroy, &#39;Remove&#39; %&gt;
-</span><span class='line'><span class="nt">&lt;/fieldset&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-<h2>TODO: Editing Questions and Answers through JavaScript</h2>
 </div>
 
 
