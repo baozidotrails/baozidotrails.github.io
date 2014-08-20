@@ -13,20 +13,20 @@ So I decide to take notes here since now. It will spend most of my time to do, b
 
 Like [#196 Nested Model Form (revised)](http://railscasts.com/episodes/196-nested-model-form-revised) said, there are three separate models and already had associations with each other:
 
-``` ruby app/models/survey.rb
+```ruby app/models/survey.rb
 class Survey < ActiveRecord::Base
   has_many :questions
 end
 ```
 
-``` ruby app/models/question.rb
+```ruby app/models/question.rb
 class Question < ActiveRecord::Base
   belongs_to :survey
   has_many :answers
 end
 ```
 
-``` ruby app/models/answer.rb
+```ruby app/models/answer.rb
 class Answer < ActiveRecord::Base
   belongs_to :question
 end
@@ -34,7 +34,7 @@ end
 
 Here is the schema:
 
-``` ruby db/schema.rb
+```ruby db/schema.rb
 ActiveRecord::Schema.define(version: 20140817155213) do
 
   create_table "answers", force: true do |t|
@@ -63,7 +63,7 @@ end
 
 All we want is to manage them in a single form. In order to implement this, we have to call `accepts_nested_attributes_for` method in our model:
 
-``` ruby app/models/survey.rb
+```ruby app/models/survey.rb
 class Survey < ActiveRecord::Base
   ...
   accepts_nested_attributes_for :questions
@@ -95,7 +95,7 @@ So that we can add `fields_for` to `Question` model in the form:
 
 Remember to add plural name of associated model (Followed by `_attributes`) to `Strong Parameter` from `SurveysController`:
 
-``` ruby app/controllers/surveys_controller.rb
+```ruby app/controllers/surveys_controller.rb
 ...
 ...
 ...
@@ -134,14 +134,14 @@ Next we are going to implement removing questions feature. We will create a chec
 ```
 Add `allow_destroy` option to `Survey` model, set the value to be true:
 
-``` ruby app/models/survey.rb
+```ruby app/models/survey.rb
 class Survey < ActiveRecord::Base
   ...
   accepts_nested_attributes_for :questions, allow_destroy: true
 end
 ```
 
-We also need to add `_destroy` to `questions_attributes` (Strong Parameter)
+We also need to add `_destroy` to `questions_attributes` like before:
 
 ```ruby app/controllers/surveys_controller.rb
 ...
@@ -166,7 +166,7 @@ Now, we also want to edit each question's answers.
 
 Just like before, we can call `accepts_nested_attributes_for` method to its associated model -  `Question`:
 
-``` ruby app/models/question.rb
+```ruby app/models/question.rb
 class Question < ActiveRecord::Base
   ...
   accepts_nested_attributes_for :answers, allow_destroy: true
@@ -175,7 +175,7 @@ end
 
 Remember again, insert the plural name of associated model, `Question` model in the strong parameter. Let's see how to do it:
 
-``` ruby app/controllers/surveys_controller.rb
+```ruby app/controllers/surveys_controller.rb
 ...
 ...
 ...
@@ -192,7 +192,7 @@ private
 
 Next, add fields for `Answer`:
 
-``` html app/views/surveys/_form.html.erb
+```html app/views/surveys/_form.html.erb
 ...
 ...
 <%= f.fields_for :questions do |question| %>
@@ -215,7 +215,7 @@ Then `Answer` model can be managed by the form.
 
 But it it better that we can make our form more neat, we will use `render` method to do it.
 
-``` html app/views/surveys/_form.html.erb
+```html app/views/surveys/_form.html.erb
 ...
 ...
 <%= f.fields_for :questions do |question| %>
@@ -256,13 +256,107 @@ And create `_question_fields.html.erb` file into `app/views/surveys` folder:
 
 create `_answer_fields.html.erb` into `app/views/surveys` folder:
 
-``` html app/views/surveys/_answer_fields.html.erb
+```html app/views/surveys/_answer_fields.html.erb
 <fieldset>
   <%= f.label :content, 'Answer' %>
   <%= f.text_field :content %>
   <%= f.check_box :_destroy %>
-  <%= label :_destroy, 'Remove' %>
+  <%= f.label :_destroy, 'Remove' %>
 </fieldset>
 ```
 
-## TODO: Editing Questions and Answers through JavaScript
+## Editing Questions and Answers through JavaScript
+
+This step we want to use links to remove questions and answers insted of checkboxes. Here are some steps for this action beforing coding:
+
+1. Click `Remove` link.
+2. Hide the `Question` or `Answer` fields.
+3. Datas will be updated after submitting.
+
+Let's get started! Remove `_destroy` checkbox, set `label` to be `hidden_field` and add a link which has `remove_fields` class.
+
+```html app/views/surveys/_question_fields.html.erb
+<fieldset>
+  <%= f.label :content, 'Question' %><br>
+  <%= f.text_area :content %><br>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to 'Remove', '#', class: 'remove_fields' %>
+  <%= f.fields_for :answers do |builder| %>
+    <%= render 'answer_fields', f: builder %>
+  <% end %>
+</fieldset>
+```
+
+So the `<%= f.hidden_field :_destroy %>` will generate `<input id="..." name="..." type="hidden" value="false">` for us.
+
+And having coffee, when we click links with `.remove_fields` class, it is triggered these event:
+
+```coffee app/assets/javascripts/custom.js.coffee
+$(document).on 'click', '.remove_fields', (event) ->
+  $(this).prev('input[type="hidden"]').val(true)
+  $(this).closest('fieldset').hide()
+  event.preventDefault()
+```
+They means:
+
+1. Select previous elements of `.remove_fields`. The filter is `type="hidden"`, and set its value to be `true`.
+2. Then hide the fieldset element which is closest to `.remove_fields`.
+
+Do the same thing to `Answer` fields:
+
+```html app/views/surveys/_answer_fields.html.erb
+<fieldset>
+  <%= f.label :content, 'Answer' %>
+  <%= f.text_field :content %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to 'Remove', '#', class: 'remove_fields' %>
+</fieldset>
+```
+
+Then we can remove fields by links.
+
+Next, add helper `link_to_add_fields`, we will make it.
+
+```html app/views/surveys/_question_fields.html.erb
+<fieldset>
+  <%= f.label :content, 'Question' %><br>
+  <%= f.text_area :content %><br>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to 'Remove', '#', class: 'remove_fields' %>
+  <%= f.fields_for :answers do |builder| %>
+    <%= render 'answer_fields', f: builder %>
+  <% end %>
+  <%= link_to_add_fields 'Add Answer', f, :answers %>
+</fieldset>
+```
+Here are it look like:
+
+```ruby app/helpers/application_helper.rb
+module ApplicationHelper
+  def link_to_add_fields(name, form, association)
+    new_object = form.object.send(association).klass.new
+    id = new_object.object_id
+    fields = form.fields_for(association, new_object, child_index: id) do |builder|
+      # render partial
+      render(association.to_s.singularize + "_fields", f: builder)
+    end
+    link_to(name, '#', class: 'add_fields', data: { id: id, fields: fields.gsub("\n", "") })
+  end
+end
+```
+
+We get `Question` instance from `form.object`, sending association to it and call `klass`, we get `Answer` class, then call `new` method. Next, we fetch its object id in order to make its field.
+
+After create fields we make a link which has `data-id` and `data-fields` attributes. So that we can retrieve fields before `.add_fields`.
+
+``` coffee app/assets/javascripts/custom.js.coffee
+$(document).on 'click', '.add_fields', (event) ->
+  time = new Date().getTime()
+  regexp = new RegExp($(this).data('id'), 'g')
+  $(this).before($(this).data('fields').replace(regexp, time))
+  event.preventDefault()
+```
+
+## References
+* [Screencast's comments](http://railscasts.com/episodes/196-nested-model-form-revised?view=comments)
+* [#390 Turbolinks](http://railscasts.com/episodes/390-turbolinks?view=asciicast)
