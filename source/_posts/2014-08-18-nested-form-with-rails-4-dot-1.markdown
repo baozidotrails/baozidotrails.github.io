@@ -3,7 +3,7 @@ layout: post
 title: "Nested form with Rails 4.1"
 date: 2014-08-18 16:50:01 +0800
 comments: true
-categories: [RailsCasts, Rails, Tips]
+categories: [RailsCasts, Rails4.1, Tips]
 ---
 Recently I got a [guide](http://us5.campaign-archive2.com/?u=0d868b8bb90703d75a27d8b42&id=055f149177&e=eea34cb3a8) of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this guide to who also wants to be self-taught.
 
@@ -112,7 +112,7 @@ private
 
 ## Removing Questions
 
-Next we are going to implement removing questions feature. We will create a checkbox which its key is `_destroy`, so the question will be removed if checkbox is checked.
+Next we are going to implement removing questions feature. We will create a checkbox whose key is `_destroy`, so the question will be removed if checkbox is checked.
 
 ``` html app/views/surveys/_form.html.erb
 ...
@@ -273,7 +273,7 @@ This step we want to use links to remove questions and answers insted of checkbo
 2. Hide the `Question` or `Answer` fields.
 3. Datas will be updated after submitting.
 
-Let's get started! Remove `_destroy` checkbox, set `label` to be `hidden_field` and add a link which has `remove_fields` class.
+Firstly, remove `checkbox` and `label` which has `_destroy` attribute. Add a `input` for `_destroy` and a link which has `remove_fields` class.
 
 ```html app/views/surveys/_question_fields.html.erb
 <fieldset>
