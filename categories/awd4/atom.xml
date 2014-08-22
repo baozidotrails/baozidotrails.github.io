@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Awd4 | Baozi Wu]]></title>
+  <link href="http://blog.baozi-wu.com/categories/awd4/atom.xml" rel="self"/>
+  <link href="http://blog.baozi-wu.com/"/>
+  <updated>2014-08-23T00:20:38+08:00</updated>
+  <id>http://blog.baozi-wu.com/</id>
+  <author>
+    <name><![CDATA[Baozi Wu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Notes for AWD With Rails 4]]></title>
+    <link href="http://blog.baozi-wu.com/2014/08/22/notes-for-awd-with-rails-4/"/>
+    <updated>2014-08-22T01:25:46+08:00</updated>
+    <id>http://blog.baozi-wu.com/2014/08/22/notes-for-awd-with-rails-4</id>
+    <content type="html"><![CDATA[<p>I checked out from LHU library and grab this book last two days:</p>
+
+<p><img src="https://0374e0f55efceb27e890e798ff092822246c9476.googledrive.com/host/0BxwbYxZqk44YNjA4YzZJSm1VZDQ/2014-08-22%2019.43.34.jpg" title="Agile Web Development with Rails 4" alt="Agile Web Development with Rails 4" /></p>
+
+<p>And I am going to take some notes here so that I can review it easily in the future, and I also would like to record a story of how n00b wrote their thoughts down.</p>
+
+<h2>Creating application with specific Rails version</h2>
+
+<p>Here is the example for Rails 4, the command:
+<code>bash Command Line
+$ rails _4.0.0_ new app_name
+</code></p>
+
+<h2>Creating your own Rails API documentation</h2>
+
+<pre><code class="bash Command Line">$ cd app_name
+$ rake doc:rails
+</code></pre>
+
+<h2>Alternative syntax</h2>
+
+<p><code>%{}</code> is an alternative syntax for double-quoted string literals, convenient for use with long strings:
+<code>ruby app/db/seed.rb
+Product.create!(title: 'Baozi', description: %{
+    A
+    n00b
+    of
+    Rails
+})
+</code>
+And here why I used <code>exclamation mark (!)</code> for <code>create</code> method? The reason why is that it will <code>raise an exception</code> if records cannot be inserted because of <code>validation failed</code>.</p>
+
+<h2>Load specific stylesheet in specific controller</h2>
+
+<p>Deponds on <code>controller_name</code> method (<a href="http://apidock.com/rails/ActionController/Metal/controller_name/class">API</a>)
+<code>html app/views/layouts/application.html.erb
+&lt;body class="&lt;%= controller.controller_name %&gt;"&gt;
+  &lt;%= yield %&gt;
+&lt;/body&gt;
+</code></p>
+
+<h2>Alternate CSS classes for even and odd numbers</h2>
+
+<p>Deponds on <code>cycle</code> method (<a href="http://apidock.com/rails/v4.0.2/ActionView/Helpers/TextHelper/cycle">API</a>)
+&#8220;` html app/views/layouts/application.html.erb</p>
+
+<h1>Listing products</h1>
+
+
+
+
+<table>
+  <% @products.each do |product| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>&#8221;>
+        &#8230;
+</table>
+
+
+<pre><code>
+## Helpful commands for Git
+If you overwrite or delete files, directries that you didn't mean to, you can always get back by using this command:
+</code></pre>
+
+<p>$ git checkout .
+&#8220;`</p>
+
+<p>On the contrary, if you create folders or files you didn&rsquo;t want to, try:
+<code>bash Command Line
+$ git clean -d -f
+</code>
+to get back.</p>
+
+<h2>comming soon.</h2>
+]]></content>
+  </entry>
+  
+</feed>

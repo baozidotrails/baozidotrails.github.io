@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Railscasts | Baozi Wu]]></title>
   <link href="http://blog.baozi-wu.com/categories/railscasts/atom.xml" rel="self"/>
   <link href="http://blog.baozi-wu.com/"/>
-  <updated>2014-08-21T01:37:37+08:00</updated>
+  <updated>2014-08-23T00:20:38+08:00</updated>
   <id>http://blog.baozi-wu.com/</id>
   <author>
     <name><![CDATA[Baozi Wu]]></name>
@@ -122,7 +122,7 @@ private
 
 <h2>Removing Questions</h2>
 
-<p>Next we are going to implement removing questions feature. We will create a checkbox which its key is <code>_destroy</code>, so the question will be removed if checkbox is checked.</p>
+<p>Next we are going to implement removing questions feature. We will create a checkbox whose key is <code>_destroy</code>, so the question will be removed if checkbox is checked.</p>
 
 <p>&#8220;` html app/views/surveys/_form.html.erb
 &hellip;
@@ -279,7 +279,7 @@ private
 </ol>
 
 
-<p>Let&rsquo;s get started! Remove <code>_destroy</code> checkbox, set <code>label</code> to be <code>hidden_field</code> and add a link which has <code>remove_fields</code> class.</p>
+<p>Firstly, remove <code>checkbox</code> and <code>label</code> which has <code>_destroy</code> attribute. Add a <code>input</code> for <code>_destroy</code> and a link which has <code>remove_fields</code> class.</p>
 
 <pre><code class="html app/views/surveys/_question_fields.html.erb">&lt;fieldset&gt;
   &lt;%= f.label :content, 'Question' %&gt;&lt;br&gt;

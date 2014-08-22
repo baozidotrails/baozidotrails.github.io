@@ -9,7 +9,7 @@
   <meta name="author" content="Baozi Wu">
 
   
-  <meta name="description" content="Recently I got a guide of telling us how to be self-taught from on-line courses. It shows me how important taking note is. I highly recommended this &hellip;">
+  <meta name="description" content="I checked out from LHU library and grab this book last two days: And I am going to take some notes here so that I can review it easily in the future &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,135 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/2014/08/22/notes-for-awd-with-rails-4/">Notes for AWD With Rails 4</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-22T01:25:46+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>1:25 am</span></time>
+        
+           | <a href="/2014/08/22/notes-for-awd-with-rails-4/#disqus_thread"
+             data-disqus-identifier="http://blog.baozi-wu.com/2014/08/22/notes-for-awd-with-rails-4/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I checked out from LHU library and grab this book last two days:</p>
+
+<p><img src="https://0374e0f55efceb27e890e798ff092822246c9476.googledrive.com/host/0BxwbYxZqk44YNjA4YzZJSm1VZDQ/2014-08-22%2019.43.34.jpg" title="Agile Web Development with Rails 4" alt="Agile Web Development with Rails 4" /></p>
+
+<p>And I am going to take some notes here so that I can review it easily in the future, and I also would like to record a story of how n00b wrote their thoughts down.</p>
+
+<h2>Creating application with specific Rails version</h2>
+
+<p>Here is the example for Rails 4, the command:</p>
+
+<figure class='code'><figcaption><span>Command Line</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rails _4.0.0_ new app_name
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Creating your own Rails API documentation</h2>
+
+<figure class='code'><figcaption><span>Command Line</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>app_name
+</span><span class='line'><span class="nv">$ </span>rake doc:rails
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Alternative syntax</h2>
+
+<p><code>%{}</code> is an alternative syntax for double-quoted string literals, convenient for use with long strings:</p>
+
+<figure class='code'><figcaption><span>app/db/seed.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Product</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="ss">title</span><span class="p">:</span> <span class="s1">&#39;Baozi&#39;</span><span class="p">,</span> <span class="ss">description</span><span class="p">:</span> <span class="sx">%{</span>
+</span><span class='line'><span class="sx">    A</span>
+</span><span class='line'><span class="sx">    n00b</span>
+</span><span class='line'><span class="sx">    of</span>
+</span><span class='line'><span class="sx">    Rails</span>
+</span><span class='line'><span class="sx">}</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And here why I used <code>exclamation mark (!)</code> for <code>create</code> method? The reason why is that it will <code>raise an exception</code> if records cannot be inserted because of <code>validation failed</code>.</p>
+
+<h2>Load specific stylesheet in specific controller</h2>
+
+<p>Deponds on <code>controller_name</code> method (<a href="http://apidock.com/rails/ActionController/Metal/controller_name/class">API</a>)</p>
+
+<figure class='code'><figcaption><span>app/views/layouts/application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;body</span> <span class="na">class=</span><span class="s">&quot;&lt;%= controller.controller_name %&gt;&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= yield %&gt;
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Alternate CSS classes for even and odd numbers</h2>
+
+<p>Deponds on <code>cycle</code> method (<a href="http://apidock.com/rails/v4.0.2/ActionView/Helpers/TextHelper/cycle">API</a>)</p>
+
+<figure class='code'><figcaption><span>app/views/layouts/application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h1&gt;</span>Listing products<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;table&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>% @products.each do |product| %&gt;
+</span><span class='line'>    <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">&quot;&lt;%= cycle(&#39;list_line_odd&#39;, &#39;list_line_even&#39;) %&gt;&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        ...
+</span><span class='line'><span class="nt">&lt;/table&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Helpful commands for Git</h2>
+
+<p>If you overwrite or delete files, directries that you didn&rsquo;t mean to, you can always get back by using this command:</p>
+
+<figure class='code'><figcaption><span>Command Line</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git checkout .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On the contrary, if you create folders or files you didn&rsquo;t want to, try:</p>
+
+<figure class='code'><figcaption><span>Command Line</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clean -d -f
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>to get back.</p>
+
+<h2>comming soon.</h2>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -269,7 +398,7 @@
 
 <h2>Removing Questions</h2>
 
-<p>Next we are going to implement removing questions feature. We will create a checkbox which its key is <code>_destroy</code>, so the question will be removed if checkbox is checked.</p>
+<p>Next we are going to implement removing questions feature. We will create a checkbox whose key is <code>_destroy</code>, so the question will be removed if checkbox is checked.</p>
 
 <figure class='code'><figcaption><span>app/views/surveys/_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -530,7 +659,7 @@
 </ol>
 
 
-<p>Let&rsquo;s get started! Remove <code>_destroy</code> checkbox, set <code>label</code> to be <code>hidden_field</code> and add a link which has <code>remove_fields</code> class.</p>
+<p>Firstly, remove <code>checkbox</code> and <code>label</code> which has <code>_destroy</code> attribute. Add a <code>input</code> for <code>_destroy</code> and a link which has <code>remove_fields</code> class.</p>
 
 <figure class='code'><figcaption><span>app/views/surveys/_question_fields.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -735,6 +864,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/2014/08/22/notes-for-awd-with-rails-4/">Notes for AWD With Rails 4</a>
+      </li>
+    
+      <li class="post">
         <a href="/2014/08/18/nested-form-with-rails-4-dot-1/">Nested Form With Rails 4.1</a>
       </li>
     
@@ -746,7 +879,7 @@
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/categories/rails'>rails (1)</a></li><li><a href='/categories/railscasts'>railscasts (1)</a></li><li><a href='/categories/thoughts'>thoughts (1)</a></li><li><a href='/categories/tips'>tips (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/categories/awd4'>awd4 (1)</a></li><li><a href='/categories/notes'>notes (1)</a></li><li><a href='/categories/rails4-1'>rails4.1 (1)</a></li><li><a href='/categories/railscasts'>railscasts (1)</a></li><li><a href='/categories/thoughts'>thoughts (1)</a></li><li><a href='/categories/tips'>tips (1)</a></li></ul>
 </section>
 
 <section>
