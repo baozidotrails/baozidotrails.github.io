@@ -36,7 +36,7 @@ Product.create!(title: 'Baozi', description: %{
 And here why I used `exclamation mark (!)` for `create` method? The reason why is that it will `raise an exception` if records cannot be inserted because of `validation failed`.
 
 ## Load specific stylesheet in specific controller
-Deponds on `controller_name` method ([API](http://apidock.com/rails/ActionController/Metal/controller_name/class))
+Deponds on `controller_name` method ([API](http://api.rubyonrails.org/classes/ActionController/Metal.html#method-c-controller_name))
 ``` html app/views/layouts/application.html.erb
 <body class="<%= controller.controller_name %>">
   <%= yield %>
@@ -44,7 +44,7 @@ Deponds on `controller_name` method ([API](http://apidock.com/rails/ActionContro
 ```
 
 ## Alternate CSS classes for even and odd numbers
-Deponds on `cycle` method ([API](http://apidock.com/rails/v4.0.2/ActionView/Helpers/TextHelper/cycle))
+Deponds on `cycle` method ([API](http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-cycle))
 ``` html app/views/layouts/application.html.erb
 <h1>Listing products</h1>
 
@@ -61,10 +61,10 @@ If you overwrite or delete files, directries that you didn't mean to, you can al
 $ git checkout .
 ```
 
-On the contrary, if you create folders or files you didn't want to, try:
+On the contrary, if you create folders or files that you didn't want, try:
 ``` bash Command Line
 $ git clean -d -f
 ```
 to get back.
 
-## comming soon.
+## Catching of Partial Results

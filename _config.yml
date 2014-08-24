@@ -102,5 +102,6 @@ google_analytics_tracking_id:
 # Facebook Like
 facebook_like: true
 
+# Search
 tapir_token: 53f46bc098f5ab0200000000
-sidebar: collapse
+# sidebar: collapse
