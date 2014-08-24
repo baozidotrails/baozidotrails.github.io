@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Notes | Baozi Wu]]></title>
   <link href="http://blog.baozi-wu.com/categories/notes/atom.xml" rel="self"/>
   <link href="http://blog.baozi-wu.com/"/>
-  <updated>2014-08-23T00:20:38+08:00</updated>
+  <updated>2014-08-24T23:04:10+08:00</updated>
   <id>http://blog.baozi-wu.com/</id>
   <author>
     <name><![CDATA[Baozi Wu]]></name>
@@ -52,7 +52,7 @@ And here why I used <code>exclamation mark (!)</code> for <code>create</code> me
 
 <h2>Load specific stylesheet in specific controller</h2>
 
-<p>Deponds on <code>controller_name</code> method (<a href="http://apidock.com/rails/ActionController/Metal/controller_name/class">API</a>)
+<p>Deponds on <code>controller_name</code> method (<a href="http://api.rubyonrails.org/classes/ActionController/Metal.html#method-c-controller_name">API</a>)
 <code>html app/views/layouts/application.html.erb
 &lt;body class="&lt;%= controller.controller_name %&gt;"&gt;
   &lt;%= yield %&gt;
@@ -61,7 +61,7 @@ And here why I used <code>exclamation mark (!)</code> for <code>create</code> me
 
 <h2>Alternate CSS classes for even and odd numbers</h2>
 
-<p>Deponds on <code>cycle</code> method (<a href="http://apidock.com/rails/v4.0.2/ActionView/Helpers/TextHelper/cycle">API</a>)
+<p>Deponds on <code>cycle</code> method (<a href="http://api.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-cycle">API</a>)
 &#8220;` html app/views/layouts/application.html.erb</p>
 
 <h1>Listing products</h1>
@@ -84,13 +84,13 @@ If you overwrite or delete files, directries that you didn't mean to, you can al
 <p>$ git checkout .
 &#8220;`</p>
 
-<p>On the contrary, if you create folders or files you didn&rsquo;t want to, try:
+<p>On the contrary, if you create folders or files that you didn&rsquo;t want, try:
 <code>bash Command Line
 $ git clean -d -f
 </code>
 to get back.</p>
 
-<h2>comming soon.</h2>
+<h2>Catching of Partial Results</h2>
 ]]></content>
   </entry>
   
