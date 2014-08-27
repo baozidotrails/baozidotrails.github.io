@@ -84,3 +84,17 @@ private
     redirect_to store_url
   end
 ```
+
+## Calculate a sum from the element
+``` ruby app/models/cart.rb
+def total_price
+  line_items.to_a.sum { |item| item.total_price }
+end
+```
+
+So the `Line_item.rb` need `total_price` method:
+``` ruby app/models/line_item.rb
+def total_price
+  product.price * quantity
+end
+```
