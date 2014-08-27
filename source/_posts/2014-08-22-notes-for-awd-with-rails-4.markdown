@@ -67,4 +67,20 @@ $ git clean -d -f
 ```
 to get back.
 
-## Catching of Partial Results
+## Handling Errors
+When we enter `example.com/carts/baozi`, `Active Record` will raise a RecordNotFound exception. We can handle it like this:
+``` ruby app/controllers/carts_controller.rb
+class CartsController < ApplicationController
+  before_action :set_cart, only: [:show, :edit, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
+  ...
+```
+
+``` ruby app/controllers/carts_controller.rb
+private
+  def invalid_cart
+    logger.error "Attempt to access invalid cart #{params[:id]}"
+    flash[:error] = "Invalid cart."
+    redirect_to store_url
+  end
+```
