@@ -85,7 +85,7 @@ private
   end
 ```
 
-## Calculate a sum from the element
+## Calculate a sum from the element ([API](http://api.rubyonrails.org/classes/Enumerable.html#method-i-sum))
 ``` ruby app/models/cart.rb
 def total_price
   line_items.to_a.sum { |item| item.total_price }
