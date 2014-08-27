@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Notes | Baozi Wu]]></title>
   <link href="http://blog.baozi-wu.com/categories/notes/atom.xml" rel="self"/>
   <link href="http://blog.baozi-wu.com/"/>
-  <updated>2014-08-24T23:04:10+08:00</updated>
+  <updated>2014-08-27T10:31:23+08:00</updated>
   <id>http://blog.baozi-wu.com/</id>
   <author>
     <name><![CDATA[Baozi Wu]]></name>
@@ -90,7 +90,23 @@ $ git clean -d -f
 </code>
 to get back.</p>
 
-<h2>Catching of Partial Results</h2>
+<h2>Handling Errors</h2>
+
+<p>When we enter <code>example.com/carts/baozi</code>, <code>Active Record</code> will raise a RecordNotFound exception. We can handle it like this:
+<code>ruby app/controllers/carts_controller.rb
+class CartsController &lt; ApplicationController
+  before_action :set_cart, only: [:show, :edit, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
+  ...
+</code></p>
+
+<pre><code class="ruby app/controllers/carts_controller.rb">private
+  def invalid_cart
+    logger.error "Attempt to access invalid cart #{params[:id]}"
+    flash[:error] = "Invalid cart."
+    redirect_to store_url
+  end
+</code></pre>
 ]]></content>
   </entry>
   
