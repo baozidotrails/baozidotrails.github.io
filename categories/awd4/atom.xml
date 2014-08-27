@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Awd4 | Baozi Wu]]></title>
   <link href="http://blog.baozi-wu.com/categories/awd4/atom.xml" rel="self"/>
   <link href="http://blog.baozi-wu.com/"/>
-  <updated>2014-08-27T10:31:23+08:00</updated>
+  <updated>2014-08-27T18:45:29+08:00</updated>
   <id>http://blog.baozi-wu.com/</id>
   <author>
     <name><![CDATA[Baozi Wu]]></name>
@@ -107,6 +107,20 @@ class CartsController &lt; ApplicationController
     redirect_to store_url
   end
 </code></pre>
+
+<h2>Calculate a sum from the element (<a href="http://api.rubyonrails.org/classes/Enumerable.html#method-i-sum">API</a>)</h2>
+
+<pre><code class="ruby app/models/cart.rb">def total_price
+  line_items.to_a.sum { |item| item.total_price }
+end
+</code></pre>
+
+<p>So the <code>Line_item.rb</code> need <code>total_price</code> method:
+<code>ruby app/models/line_item.rb
+def total_price
+  product.price * quantity
+end
+</code></p>
 ]]></content>
   </entry>
   

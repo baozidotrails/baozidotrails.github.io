@@ -217,6 +217,28 @@
 </span><span class='line'>  <span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
+
+<h2>Calculate a sum from the element (<a href="http://api.rubyonrails.org/classes/Enumerable.html#method-i-sum">API</a>)</h2>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/cart.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">total_price</span>
+</span><span class='line'>  <span class="n">line_items</span><span class="o">.</span><span class="n">to_a</span><span class="o">.</span><span class="n">sum</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">item</span><span class="o">.</span><span class="n">total_price</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>So the <code>Line_item.rb</code> need <code>total_price</code> method:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>app/models/line_item.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">total_price</span>
+</span><span class='line'>  <span class="n">product</span><span class="o">.</span><span class="n">price</span> <span class="o">*</span> <span class="n">quantity</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
 </div>
 
 
